@@ -8,20 +8,8 @@
     ],
     "routes": [
         {
-            "src": "/static/(.*)",
-            "dest": "/staticfiles/$1"
-        },
-        {
-            "src": "/media/(.*)",
-            "dest": "/media/$1"
-        },
-        {
             "src": "/(.*)",
-            "dest": "/api/index.py"
+            "dest": "api/index.py"
         }
-    ],
-    "env": {
-        "DJANGO_SETTINGS_MODULE": "ecommerce.settings_prod",
-        "PYTHONPATH": "."
-    }
+    ]
 } 
