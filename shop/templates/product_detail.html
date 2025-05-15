@@ -1,0 +1,252 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} - ShopName{% endblock %}
+
+{% block content %}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <!-- Product Images -->
+        <div class="space-y-4">
+            <div class="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden">
+                <img src="https://via.placeholder.com/600" alt="Product" class="object-cover w-full h-full" id="main-image">
+            </div>
+            <div class="grid grid-cols-4 gap-4">
+                <button class="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden thumbnail-btn">
+                    <img src="https://via.placeholder.com/150" alt="Product thumbnail" class="object-cover w-full h-full">
+                </button>
+                <button class="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden thumbnail-btn">
+                    <img src="https://via.placeholder.com/150" alt="Product thumbnail" class="object-cover w-full h-full">
+                </button>
+                <button class="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden thumbnail-btn">
+                    <img src="https://via.placeholder.com/150" alt="Product thumbnail" class="object-cover w-full h-full">
+                </button>
+                <button class="aspect-w-1 aspect-h-1 bg-gray-200 rounded-lg overflow-hidden thumbnail-btn">
+                    <img src="https://via.placeholder.com/150" alt="Product thumbnail" class="object-cover w-full h-full">
+                </button>
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div>
+            <h1 class="text-2xl md:text-3xl font-bold mb-4">{{ product.name }}</h1>
+            <div class="flex items-center mb-4">
+                <div class="flex items-center text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                <span class="text-gray-500 ml-2">(24 reviews)</span>
+            </div>
+            <div class="text-2xl font-bold text-gray-900 mb-6">${{ product.price }}</div>
+            
+            <!-- Product Options Form -->
+            <form id="product-options-form" class="space-y-6">
+                <!-- Color Selection -->
+                <div>
+                    <h3 class="font-medium mb-3">Color</h3>
+                    <div class="flex space-x-2">
+                        <button type="button" class="w-8 h-8 rounded-full bg-red-500 ring-2 ring-offset-2 ring-red-500 color-option" data-color="Red"></button>
+                        <button type="button" class="w-8 h-8 rounded-full bg-blue-500 color-option" data-color="Blue"></button>
+                        <button type="button" class="w-8 h-8 rounded-full bg-green-500 color-option" data-color="Green"></button>
+                        <button type="button" class="w-8 h-8 rounded-full bg-yellow-500 color-option" data-color="Yellow"></button>
+                    </div>
+                    <input type="hidden" name="selected_color" id="selected-color" value="Red">
+                </div>
+
+                <!-- Size Selection -->
+                <div>
+                    <h3 class="font-medium mb-3">Size</h3>
+                    <div class="grid grid-cols-4 gap-2">
+                        <button type="button" class="border rounded-md py-2 hover:border-blue-500 size-option" data-size="S">S</button>
+                        <button type="button" class="border rounded-md py-2 border-blue-500 bg-blue-50 size-option" data-size="M">M</button>
+                        <button type="button" class="border rounded-md py-2 hover:border-blue-500 size-option" data-size="L">L</button>
+                        <button type="button" class="border rounded-md py-2 hover:border-blue-500 size-option" data-size="XL">XL</button>
+                    </div>
+                    <input type="hidden" name="selected_size" id="selected-size" value="M">
+                </div>
+
+                <!-- Quantity -->
+                <div>
+                    <h3 class="font-medium mb-3">Quantity</h3>
+                    <div class="flex items-center space-x-4">
+                        <button type="button" class="w-10 h-10 rounded-lg border flex items-center justify-center hover:bg-gray-100" id="decrease-qty">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" name="quantity" id="quantity" value="1" min="1" max="99" class="w-16 text-center border-gray-200 rounded-md">
+                        <button type="button" class="w-10 h-10 rounded-lg border flex items-center justify-center hover:bg-gray-100" id="increase-qty">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Buy Now with WhatsApp -->
+                <div class="space-y-3">
+                    <button type="button" id="whatsapp-button" class="w-full bg-green-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-600 transition duration-300 flex items-center justify-center space-x-2">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        <span>Buy via WhatsApp</span>
+                    </button>
+                    <button type="button" class="w-full border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition duration-300 flex items-center justify-center space-x-2">
+                        <i class="far fa-heart"></i>
+                        <span>Add to Wishlist</span>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Product Description -->
+            <div class="mt-8 prose max-w-none">
+                <h3 class="text-lg font-medium mb-3">Description</h3>
+                <p class="text-gray-600 mb-4">
+                    {{ product.description }}
+                </p>
+                <ul class="list-disc list-inside text-gray-600 space-y-2">
+                    {% for feature in product.features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details Tabs -->
+    <div class="mb-12">
+        <div class="border-b">
+            <nav class="flex space-x-8">
+                <button class="border-b-2 border-blue-600 py-4 text-blue-600 font-medium">
+                    Description
+                </button>
+                <button class="py-4 text-gray-500 font-medium">
+                    Additional Information
+                </button>
+                <button class="py-4 text-gray-500 font-medium">
+                    Reviews (24)
+                </button>
+            </nav>
+        </div>
+        <div class="py-6">
+            <div class="prose max-w-none">
+                <h2 class="text-2xl font-bold mb-4">Product Details</h2>
+                <p class="mb-4">
+                    {{ product.detailed_description }}
+                </p>
+                <h3 class="text-xl font-bold mb-3">Features</h3>
+                <ul class="list-disc list-inside space-y-2">
+                    {% for feature in product.detailed_features %}
+                    <li>{{ feature }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    <div>
+        <h2 class="text-2xl font-bold mb-6">Related Products</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+            {% for product in related_products %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden group">
+                <div class="aspect-w-1 aspect-h-1 bg-gray-200 relative">
+                    <img src="{{ product.image }}" alt="{{ product.name }}" class="object-cover w-full h-full">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition duration-300"></div>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold mb-2 text-sm md:text-base">{{ product.name }}</h3>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-900 font-bold">${{ product.price }}</span>
+                        <button class="bg-blue-600 text-white px-3 py-1.5 rounded text-sm hover:bg-blue-700 transition duration-300">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- WhatsApp Integration JavaScript -->
+    <script>
+        // Product option selection
+        const colorOptions = document.querySelectorAll('.color-option');
+        const sizeOptions = document.querySelectorAll('.size-option');
+        const quantityInput = document.getElementById('quantity');
+        const decreaseQty = document.getElementById('decrease-qty');
+        const increaseQty = document.getElementById('increase-qty');
+        const selectedColor = document.getElementById('selected-color');
+        const selectedSize = document.getElementById('selected-size');
+        
+        // Color selection
+        colorOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                colorOptions.forEach(btn => btn.classList.remove('ring-2', 'ring-offset-2'));
+                option.classList.add('ring-2', 'ring-offset-2');
+                selectedColor.value = option.dataset.color;
+            });
+        });
+
+        // Size selection
+        sizeOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                sizeOptions.forEach(btn => {
+                    btn.classList.remove('border-blue-500', 'bg-blue-50');
+                    btn.classList.add('hover:border-blue-500');
+                });
+                option.classList.remove('hover:border-blue-500');
+                option.classList.add('border-blue-500', 'bg-blue-50');
+                selectedSize.value = option.dataset.size;
+            });
+        });
+
+        // Quantity controls
+        decreaseQty.addEventListener('click', () => {
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+            }
+        });
+
+        increaseQty.addEventListener('click', () => {
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue < 99) {
+                quantityInput.value = currentValue + 1;
+            }
+        });
+
+        // WhatsApp integration
+        document.getElementById('whatsapp-button').addEventListener('click', () => {
+            const productName = document.querySelector('h1').textContent;
+            const color = selectedColor.value;
+            const size = selectedSize.value;
+            const quantity = quantityInput.value;
+            const price = document.querySelector('.text-2xl.font-bold.text-gray-900').textContent;
+
+            // Replace this with your actual WhatsApp number
+            const phoneNumber = '1234567890';
+            
+            // Create message
+            const message = `Hello! I would like to order:\n\n` +
+                          `Product: ${productName}\n` +
+                          `Color: ${color}\n` +
+                          `Size: ${size}\n` +
+                          `Quantity: ${quantity}\n` +
+                          `Price: ${price}\n\n` +
+                          `Please confirm availability and provide payment details.`;
+
+            // Create WhatsApp URL
+            const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+            
+            // Open WhatsApp in new tab
+            window.open(whatsappURL, '_blank');
+        });
+
+        // Thumbnail image handling
+        const mainImage = document.getElementById('main-image');
+        const thumbnailBtns = document.querySelectorAll('.thumbnail-btn');
+
+        thumbnailBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const thumbnailSrc = btn.querySelector('img').src;
+                mainImage.src = thumbnailSrc;
+            });
+        });
+    </script>
+{% endblock %} 

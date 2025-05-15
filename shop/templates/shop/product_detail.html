@@ -1,0 +1,177 @@
+{% extends 'shop/base.html' %}
+
+{% block title %}{{ product.name }} - THRIFTCUSAT{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4">
+    <div class="bg-black">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Image Gallery -->
+            <div class="space-y-6">
+                <div class="aspect-square bg-gray-900 overflow-hidden">
+                    {% if product.images.first %}
+                        <img src="{{ product.images.first.image.url }}" 
+                             alt="{{ product.name }}"
+                             class="w-full h-full object-cover"
+                             id="mainImage">
+                    {% else %}
+                        <div class="w-full h-full bg-gray-800 flex items-center justify-center">
+                            <span class="text-white/60">No image</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <!-- Thumbnail Gallery -->
+                <div class="grid grid-cols-4 gap-4">
+                    {% for image in product.images.all %}
+                    <div class="aspect-square bg-gray-900 overflow-hidden cursor-pointer">
+                        <img src="{{ image.image.url }}" 
+                             alt="{{ product.name }}"
+                             class="w-full h-full object-cover hover:opacity-75 transition duration-300"
+                             onclick="updateMainImage(this.src)">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Product Information -->
+            <div class="lg:pl-12 pb-12">
+                <!-- Hot Product Badge -->
+                <div class="mb-8">
+                    <span class="text-xs uppercase tracking-wider text-white/60">HOT PRODUCT | LOW STOCK</span>
+                </div>
+
+                <!-- Product Title and Price -->
+                <h1 class="text-3xl font-light uppercase tracking-[0.2em] text-white mb-8">{{ product.name }}</h1>
+                <div class="flex items-baseline gap-4 mb-12">
+                    <p class="text-2xl text-white">₹{{ product.price }}</p>
+                    {% if product.compare_price %}
+                        <p class="text-lg text-white/60 line-through">₹{{ product.compare_price }}</p>
+                        <span class="text-sm uppercase tracking-wider text-white/60">
+                            Save {{ product.discount_percentage }}%
+                        </span>
+                    {% endif %}
+                </div>
+
+                <!-- Product Features -->
+                <div class="grid grid-cols-2 gap-4 mb-12">
+                    <div class="text-center p-4 border border-white/10">
+                        <span class="text-sm uppercase tracking-wider text-white">Quality Assured</span>
+                    </div>
+                    <div class="text-center p-4 border border-white/10">
+                        <span class="text-sm uppercase tracking-wider text-white">All-day comfort</span>
+                    </div>
+                    <div class="text-center p-4 border border-white/10">
+                        <span class="text-sm uppercase tracking-wider text-white">Versatile design</span>
+                    </div>
+                    <div class="text-center p-4 border border-white/10">
+                        <span class="text-sm uppercase tracking-wider text-white">Easy returns</span>
+                    </div>
+                </div>
+
+                <!-- Product Description -->
+                <div class="mb-12">
+                    <p class="text-white/60 text-sm leading-relaxed">{{ product.description }}</p>
+                </div>
+
+                <!-- Product Variants -->
+                {% if product.variants.exists %}
+                <div class="space-y-6 mb-12">
+                    {% if product.variants.first.color %}
+                    <div>
+                        <label class="block text-sm uppercase tracking-wider text-white mb-3">Color</label>
+                        <select id="color" class="w-full bg-transparent border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/20">
+                            {% for variant in product.variants.all|dictsort:"color" %}
+                                {% if variant.color %}
+                                    <option value="{{ variant.color }}">{{ variant.get_color_display }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+
+                    {% if product.variants.first.size %}
+                    <div>
+                        <label class="block text-sm uppercase tracking-wider text-white mb-3">Size</label>
+                        <select id="size" class="w-full bg-transparent border border-white/10 text-white px-4 py-3 focus:outline-none focus:border-white/20">
+                            {% for variant in product.variants.all|dictsort:"size" %}
+                                {% if variant.size %}
+                                    <option value="{{ variant.size }}">{{ variant.get_size_display }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Quantity -->
+                <div class="mb-12">
+                    <label class="block text-sm uppercase tracking-wider text-white mb-3">Quantity</label>
+                    <div class="flex items-center border border-white/10">
+                        <button onclick="updateQuantity(-1)" class="px-6 py-3 text-white hover:bg-white/5 transition">-</button>
+                        <input type="number" id="quantity" value="1" min="1" class="w-20 text-center bg-transparent text-white border-x border-white/10 py-3">
+                        <button onclick="updateQuantity(1)" class="px-6 py-3 text-white hover:bg-white/5 transition">+</button>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Button -->
+                <button onclick="buyViaWhatsApp()" 
+                        class="w-full bg-white text-black py-4 uppercase tracking-[0.2em] text-sm font-medium hover:bg-white/90 transition duration-300 flex items-center justify-center">
+                    <svg class="w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824zm-3.423-14.416c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm.029 18.88c-1.161 0-2.305-.292-3.318-.844l-3.677.964.984-3.595c-.607-1.052-.927-2.246-.926-3.468.001-3.825 3.113-6.937 6.937-6.937 1.856.001 3.598.723 4.907 2.034 1.31 1.311 2.031 3.054 2.03 4.908-.001 3.825-3.113 6.938-6.937 6.938z"/>
+                    </svg>
+                    Buy via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Reviews -->
+    {% if product.reviews.exists %}
+    <div class="mt-16 border-t border-white/10 pt-16">
+        <h2 class="text-sm uppercase tracking-[0.2em] text-white mb-8">Customer Reviews</h2>
+        <div class="grid gap-8">
+            {% for review in product.reviews.all %}
+            <div class="border-b border-white/10 pb-8">
+                <div class="flex items-center gap-2 mb-2">
+                    <span class="text-white">{{ review.name }}</span>
+                    <div class="text-white/60">★★★★★</div>
+                </div>
+                <p class="text-white/60 text-sm">{{ review.content }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function updateMainImage(src) {
+    document.getElementById('mainImage').src = src;
+}
+
+function updateQuantity(change) {
+    const quantityInput = document.getElementById('quantity');
+    const newValue = parseInt(quantityInput.value) + change;
+    if (newValue >= 1) {
+        quantityInput.value = newValue;
+    }
+}
+
+function buyViaWhatsApp() {
+    const quantity = document.getElementById('quantity').value;
+    const color = document.getElementById('color')?.value || 'N/A';
+    const size = document.getElementById('size')?.value || 'N/A';
+    
+    const message = `Hello! I would like to order:%0a
+- Product: {{ product.name }}%0a
+- Quantity: ${quantity}%0a
+- Color: ${color}%0a
+- Size: ${size}%0a
+- Price: ₹{{ product.price }} each%0a
+Total: ₹{{ product.price }}*${quantity}`;
+    
+    window.open(`https://wa.me/{{ whatsapp_number }}?text=${message}`, '_blank');
+}
+</script>
+{% endblock %} 

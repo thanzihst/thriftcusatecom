@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Welcome to ShopName{% endblock %}
+
+{% block content %}
+    <!-- Hero Section -->
+    <section class="relative h-[600px] flex items-center justify-center overflow-hidden">
+        <video 
+            class="absolute inset-0 w-full h-full object-cover"
+            autoplay 
+            loop 
+            muted 
+            playsinline
+        >
+            <source src="/static/shop/videos/hero-bg.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative z-10 text-center text-white">
+            <h1 class="text-5xl font-bold mb-4">Welcome to Our Shop</h1>
+            <p class="text-xl mb-8">Discover amazing products at great prices</p>
+            <a href="{% url 'products' %}" class="bg-white text-blue-600 px-8 py-3 rounded-full hover:bg-gray-100 transition duration-300">
+                Shop Now
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured Categories -->
+    <section class="mb-8">
+        <h2 class="text-xl md:text-2xl font-bold mb-4">Shop by Category</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            <a href="/category/electronics" class="group">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="aspect-w-1 aspect-h-1 bg-gray-200">
+                        <div class="p-4 md:p-6 flex items-center justify-center">
+                            <i class="fas fa-laptop text-2xl md:text-4xl text-gray-600 group-hover:text-blue-600 transition duration-300"></i>
+                        </div>
+                    </div>
+                    <div class="p-3 text-center">
+                        <h3 class="font-semibold text-sm md:text-base">Electronics</h3>
+                    </div>
+                </div>
+            </a>
+            <a href="/category/fashion" class="group">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="aspect-w-1 aspect-h-1 bg-gray-200">
+                        <div class="p-4 md:p-6 flex items-center justify-center">
+                            <i class="fas fa-tshirt text-2xl md:text-4xl text-gray-600 group-hover:text-blue-600 transition duration-300"></i>
+                        </div>
+                    </div>
+                    <div class="p-3 text-center">
+                        <h3 class="font-semibold text-sm md:text-base">Fashion</h3>
+                    </div>
+                </div>
+            </a>
+            <a href="/category/home" class="group">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="aspect-w-1 aspect-h-1 bg-gray-200">
+                        <div class="p-4 md:p-6 flex items-center justify-center">
+                            <i class="fas fa-home text-2xl md:text-4xl text-gray-600 group-hover:text-blue-600 transition duration-300"></i>
+                        </div>
+                    </div>
+                    <div class="p-3 text-center">
+                        <h3 class="font-semibold text-sm md:text-base">Home & Living</h3>
+                    </div>
+                </div>
+            </a>
+            <a href="/category/beauty" class="group">
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="aspect-w-1 aspect-h-1 bg-gray-200">
+                        <div class="p-4 md:p-6 flex items-center justify-center">
+                            <i class="fas fa-spa text-2xl md:text-4xl text-gray-600 group-hover:text-blue-600 transition duration-300"></i>
+                        </div>
+                    </div>
+                    <div class="p-3 text-center">
+                        <h3 class="font-semibold text-sm md:text-base">Beauty</h3>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="mb-8">
+        <h2 class="text-xl md:text-2xl font-bold mb-4">Featured Products</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+            <!-- Product Card -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden group">
+                <div class="aspect-w-1 aspect-h-1 bg-gray-200 relative">
+                    <img src="https://via.placeholder.com/300" alt="Product" class="object-cover w-full h-full">
+                    <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition duration-300"></div>
+                </div>
+                <div class="p-3 md:p-4">
+                    <h3 class="font-semibold mb-2 text-sm md:text-base">Product Name</h3>
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between space-y-2 md:space-y-0">
+                        <span class="text-gray-900 font-bold">$99.99</span>
+                        <button class="w-full md:w-auto bg-blue-600 text-white px-3 py-2 rounded text-sm hover:bg-blue-700 transition duration-300">
+                            Add to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Repeat product cards for other featured items -->
+        </div>
+    </section>
+
+    <!-- Special Offers -->
+    <section class="mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+            <div class="bg-gradient-to-r from-pink-500 to-red-500 rounded-xl text-white p-6 md:p-8">
+                <h3 class="text-xl md:text-2xl font-bold mb-3">Special Offer</h3>
+                <p class="mb-4 text-sm md:text-base">Get 20% off on all fashion items</p>
+                <a href="/offers" class="inline-block bg-white text-red-500 px-4 md:px-6 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition duration-300">
+                    Shop Now
+                </a>
+            </div>
+            <div class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl text-white p-6 md:p-8">
+                <h3 class="text-xl md:text-2xl font-bold mb-3">New Arrivals</h3>
+                <p class="mb-4 text-sm md:text-base">Check out our latest collection</p>
+                <a href="/new-arrivals" class="inline-block bg-white text-purple-500 px-4 md:px-6 py-2 rounded-lg text-sm font-semibold hover:bg-gray-100 transition duration-300">
+                    Explore
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %} 
