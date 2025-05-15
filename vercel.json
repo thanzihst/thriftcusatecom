@@ -9,27 +9,38 @@
             "src": "build_files.sh",
             "use": "@vercel/static-build",
             "config": {
-                "distDir": "staticfiles"
+                "distDir": "staticfiles",
+                "zeroConfig": true
             }
         }
     ],
     "routes": [
         {
             "src": "/static/(.*)",
-            "dest": "/static/$1"
+            "dest": "/staticfiles/$1",
+            "headers": {
+                "cache-control": "public, max-age=31536000, immutable"
+            }
         },
         {
             "src": "/media/(.*)",
-            "dest": "/media/$1"
+            "dest": "/media/$1",
+            "headers": {
+                "cache-control": "public, max-age=31536000, immutable"
+            }
+        },
+        {
+            "handle": "filesystem"
         },
         {
             "src": "/(.*)",
-            "dest": "api/wsgi_handler.py"
+            "dest": "/api/wsgi_handler.py"
         }
     ],
     "env": {
         "DJANGO_SETTINGS_MODULE": "ecommerce.settings_prod",
         "PYTHONPATH": ".",
-        "DJANGO_ALLOWED_HOSTS": ".vercel.app"
+        "DJANGO_ALLOWED_HOSTS": ".vercel.app",
+        "VERCEL_FORCE_NO_BUILD_CACHE": "1"
     }
 } 
