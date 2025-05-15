@@ -2,25 +2,19 @@
     "version": 2,
     "builds": [
         {
-            "src": "index.py",
-            "use": "@vercel/python",
-            "config": {
-                "runtime": "python3.9",
-                "maxLambdaSize": "15mb"
-            }
+            "src": "api/index.py",
+            "use": "@vercel/python"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "/index.py"
+            "dest": "/api/index.py"
         }
     ],
     "env": {
         "DJANGO_SETTINGS_MODULE": "ecommerce.settings_prod",
         "PYTHONPATH": ".",
-        "DJANGO_ALLOWED_HOSTS": "*",
-        "VERCEL_FORCE_NO_BUILD_CACHE": "1",
-        "PYTHON_VERSION": "3.9"
+        "DJANGO_ALLOWED_HOSTS": "*"
     }
 } 
