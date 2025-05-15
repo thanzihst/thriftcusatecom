@@ -31,20 +31,17 @@ CORS_ALLOW_CREDENTIALS = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+WHITENOISE_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+WHITENOISE_MAX_AGE = 31536000  # 1 year
 
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Database configuration
+# Database configuration - use SQLite for Vercel serverless
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('DB_NAME', 'postgres'),
-        'USER': os.environ.get('DB_USER', 'postgres.vmggpyepxhdgigthsree'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', '9sdswIIg8ykTQvhF'),
-        'HOST': os.environ.get('DB_HOST', 'aws-0-us-east-1.pooler.supabase.com'),
-        'PORT': os.environ.get('DB_PORT', '6543'),
-        'CONN_MAX_AGE': 0,  # Close connections after each request
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 } 
